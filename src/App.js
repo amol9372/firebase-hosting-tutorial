@@ -20,9 +20,7 @@ function App() {
 
   return (
     <div className="Firebase Hosting app">
-      {activity && (
-        <label style={{ fontSize: "30px" }}>{activity.activity}</label>
-      )}
+      {activity && <label style={{ fontSize: "30px" }}>{activity}</label>}
     </div>
   );
 }
