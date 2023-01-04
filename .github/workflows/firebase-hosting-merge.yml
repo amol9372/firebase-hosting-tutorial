@@ -7,14 +7,46 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - master
 jobs:
-  build_and_deploy:
+  build_and_deploy_dev:
     runs-on: ubuntu-latest
+    environment: dev
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v2
       - run: npm install
-      - run: npm run build
+      - run: npm install caniuse-lite@1.0.30001397
+      - run: npm run build --if-present
+        env:
+          CI: false
+          REACT_APP_SERVER_BASE_URL: "${{ secrets.REACT_APP_SERVER_BASE_URL }}"
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          target: dev
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SAMPLE_HOSTING_APP }}"
+          channelId: live
+          projectId: sample-hosting-app
+
+  build_and_deploy_prod:
+    needs: build_and_deploy
+    runs-on: ubuntu-latest
+    environment: prod
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm install caniuse-lite@1.0.30001397
+      - run: npm run build --if-present
+        env:
+          CI: false
+          REACT_APP_SERVER_BASE_URL: "${{ secrets.REACT_APP_SERVER_BASE_URL }}"
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          target: prod
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SAMPLE_HOSTING_APP }}"
           channelId: live

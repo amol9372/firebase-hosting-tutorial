@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "sample-hosting-app"
+  },
+  "targets": {
+    "sample-hosting-app": {
+      "hosting": {
+        "prod": [
+          "prod-firebase-hosting-tutorial"
+        ],
+        "dev": [
+          "dev-firebase-hosting-tutorial"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
