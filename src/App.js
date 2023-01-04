@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 
+axios.defaults.headers.common["X-Requested-With"] = "XmlHttpRequest";
+
 function App() {
   const [activity, setActivity] = useState();
 
@@ -10,7 +12,7 @@ function App() {
   }, []);
 
   const boredActivity = () => {
-    axios.get("https://www.boredapi.com/api/activity").then((res) => {
+    axios.get(process.env.REACT_APP_SERVER_BASE_URL).then((res) => {
       console.log(res);
       setActivity(res.data);
     });
